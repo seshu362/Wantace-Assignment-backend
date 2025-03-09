@@ -10,7 +10,7 @@ const fs = require("fs");
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON request bodies
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors());
 
 // Create uploads directory if it doesn't exist
 if (!fs.existsSync("uploads")) {
@@ -246,6 +246,9 @@ app.post(
 app.put("/recipes/:id", authenticateToken, (req, res) => {
   const { id } = req.params;
   const { title, description, ingredients, instructions, categoryId, imageUrl } = req.body;
+
+  console.log("Request Body:", req.body); // Debugging: Log the request body
+  console.log("User ID:", req.userId); // Debugging: Log the user ID
 
   db.run(
     `UPDATE recipes SET title = ?, description = ?, ingredients = ?, instructions = ?, categoryId = ?, imageUrl = ? WHERE id = ? AND userId = ?`,
